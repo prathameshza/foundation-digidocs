@@ -1,3 +1,5 @@
+import com.pluton.orbitscanner.config.ProjectConfig
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,19 +9,18 @@ plugins {
     id("com.pluton.orbitscanner.app.release-version")
 }
 
-
 android {
     namespace = "com.pluton.orbitscanner"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
+        version = release(ProjectConfig.COMPILE_SDK_MAJOR) {
+            minorApiLevel = ProjectConfig.COMPILE_SDK_MINOR
         }
     }
 
     defaultConfig {
         applicationId = "com.pluton.orbitscanner"
-        minSdk = 36
-        targetSdk = 36
+        minSdk = ProjectConfig.MIN_SDK
+        targetSdk = ProjectConfig.TARGET_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,7 +42,6 @@ android {
     }
 }
 
-
 dependencies {
     implementation(project(":core"))
     implementation(project(":feature-home"))
@@ -55,7 +55,6 @@ dependencies {
     // Dagger Hilt Integration for the App Module
     implementation(libs.google.hilt.android)
     add("kapt", libs.google.hilt.compiler)
-
 
     testImplementation(libs.bundles.test.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -1,3 +1,5 @@
+import com.pluton.orbitscanner.config.ProjectConfig
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -6,18 +8,16 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-
-
 android {
     namespace = "com.pluton.orbitscanner.core"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
+        version = release(ProjectConfig.COMPILE_SDK_MAJOR) {
+            minorApiLevel = ProjectConfig.COMPILE_SDK_MINOR
         }
     }
 
     defaultConfig {
-        minSdk = 36
+        minSdk = ProjectConfig.MIN_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,7 +33,6 @@ android {
     buildFeatures {
         compose = true
     }
-
 }
 
 dependencies {

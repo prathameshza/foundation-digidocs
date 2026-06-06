@@ -1,3 +1,5 @@
+import com.pluton.orbitscanner.config.ProjectConfig
+
 plugins {
     alias(libs.plugins.android.library)
 }
@@ -5,21 +7,19 @@ plugins {
 android {
     namespace = "com.pluton.orbitscanner.feature.scanner"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
+        version = release(ProjectConfig.COMPILE_SDK_MAJOR) {
+            minorApiLevel = ProjectConfig.COMPILE_SDK_MINOR
         }
     }
 
     defaultConfig {
-        minSdk = 36
-
+        minSdk = ProjectConfig.MIN_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
 }
 
 dependencies {
