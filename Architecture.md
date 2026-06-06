@@ -171,3 +171,18 @@ To prevent the code from becoming a tangled mess over time, we strictly enforce 
 | **`app` $\to$ `feature`** | **✅ YES** | The app module must assemble the features and route between them. |
 | **`feature` $\to$ `feature`** | **❌ NO** | Features must remain completely decoupled. If Feature A needs to talk to Feature B, it must be coordinated through the `:app` module or shared via `:core`. |
 | **`core` $\to$ `feature`** | **❌ NO** | Core is the foundation. It must never depend on any feature layer; otherwise, it creates circular dependency issues. |
+
+
+## 6. Build & Dependency Configuration
+
+To keep the development lifecycle scalable and the build files clean, dependency versions and release details are centralized [5].
+
+### Dependency Consolidation (Bundles)
+Using Gradle Version Catalog bundles (such as `libs.bundles.compose.ui`, `libs.bundles.test.core`, and `libs.bundles.android.test.core`) simplifies dependency declarations across module-level `build.gradle.kts` files:
+*   **Reduced Duplication:** Prevents listing individual packages repeatedly across different module modules.
+*   **Enforced Consistency:** Ensures that Jetpack Compose components and the test suite libraries remain synchronized on identical compiler and runtime versions.
+
+### Dynamic App Versioning Plugin (`AppReleaseVersionPlugin`)
+The project utilizes a custom script plugin housed in the `buildSrc` directory to manage releases on the Google Play Console:
+*   **Modern API Integration:** By targeting `ApplicationAndroidComponentsExtension` and updating configurations within `onVariants`, the plugin relies on modern, configuration-cache-friendly Gradle APIs [1, 2].
+*   **DSL Decoupling:** This isolates the logic required to calculate `versionCode` and `versionName` (e.g., handling environment flags or patch counts) entirely from the main `:app` module's DSL.

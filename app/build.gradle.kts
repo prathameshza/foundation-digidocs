@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("com.digidocx.app.release-version")
 }
 
 
@@ -19,8 +20,6 @@ android {
         applicationId = "com.digidocx.app"
         minSdk = 36
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -49,10 +48,7 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.bundles.compose.ui)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
@@ -61,11 +57,9 @@ dependencies {
     add("kapt", libs.google.hilt.compiler)
 
 
-    testImplementation(libs.junit)
+    testImplementation(libs.bundles.test.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.junit)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    androidTestImplementation(libs.bundles.android.test.core)
+    debugImplementation(libs.bundles.compose.debug)
 }
