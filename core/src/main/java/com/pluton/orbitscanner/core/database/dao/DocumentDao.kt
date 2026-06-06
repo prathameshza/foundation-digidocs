@@ -8,4 +8,5 @@ interface DocumentDao {
     fun getLocalDocuments(): Flow<List<DocumentEntity>>
     fun getDocumentsInFolder(parentId: String): Flow<List<DocumentEntity>>
     suspend fun deleteDocument(id: String)
+    suspend fun insertDocument(document: DocumentEntity)
 }

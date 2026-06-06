@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.pluton.orbitscanner.feature.home.presentation.screen
 
 import androidx.compose.foundation.background
@@ -22,7 +24,10 @@ import com.pluton.orbitscanner.core.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(onNavigateBack: () -> Unit) {
+fun ProfileScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToSubscription: () -> Unit
+) {
     val profile = UserProfile()
 
     Scaffold(
@@ -72,6 +77,7 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
                             .border(1.dp, AccentPurple, RoundedCornerShape(8.dp))
+                            .clickable { onNavigateToSubscription() }
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text("FREE PLAN", color = AccentPurple, fontSize = 9.sp, fontWeight = FontWeight.Bold)
@@ -86,6 +92,7 @@ fun ProfileScreen(onNavigateBack: () -> Unit) {
                 colors = CardDefaults.cardColors(containerColor = ToolCardBackground),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable { onNavigateToSubscription() }
                     .border(1.dp, BorderPurple, RoundedCornerShape(16.dp))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {

@@ -4,6 +4,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.55")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.59.2")
     }
 }

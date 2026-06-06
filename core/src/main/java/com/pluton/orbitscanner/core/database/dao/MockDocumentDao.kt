@@ -57,4 +57,8 @@ class MockDocumentDao @Inject constructor() : DocumentDao {
     override suspend fun deleteDocument(id: String) {
         listState.value = listState.value.filterNot { it.id == id }
     }
+
+    override suspend fun insertDocument(document: DocumentEntity) {
+        listState.value = listOf(document) + listState.value
+    }
 }

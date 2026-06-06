@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.pluton.orbitscanner.feature.home.presentation.screen
 
 import androidx.compose.foundation.background

@@ -26,11 +26,21 @@ import com.pluton.orbitscanner.feature.home.presentation.screen.FolderDetailScre
 import com.pluton.orbitscanner.feature.home.presentation.screen.HomeScreen
 import com.pluton.orbitscanner.feature.home.presentation.screen.ProfileScreen
 import com.pluton.orbitscanner.feature.home.presentation.screen.SearchScreen
+import com.pluton.orbitscanner.feature.subscription.presentation.screen.SubscriptionScreen
+import com.pluton.orbitscanner.feature.scanner.presentation.screen.ScannerScreen
+import com.pluton.orbitscanner.feature.aiocr.presentation.screen.AiOcrScreen
+import com.pluton.orbitscanner.feature.pdftools.presentation.screen.PdfToolsScreen
+import com.pluton.orbitscanner.feature.editor.presentation.screen.EditorScreen
 
 sealed interface Screen {
     object Home : Screen
     object Search : Screen
     object Profile : Screen
+    object Subscription : Screen
+    object Scanner : Screen
+    data class AiOcr(val toolName: String) : Screen
+    data class PdfTools(val toolName: String) : Screen
+    data class Editor(val documentId: String) : Screen
     data class FolderDetail(val folderId: String) : Screen
     data class FutureFeaturePlaceholder(val featureName: String) : Screen
 }
@@ -57,7 +67,14 @@ fun AppNavHost() {
                 onNavigateToSearch = { navigateTo(Screen.Search) },
                 onNavigateToProfile = { navigateTo(Screen.Profile) },
                 onNavigateToFolder = { folderId -> navigateTo(Screen.FolderDetail(folderId)) },
-                onNavigateToTool = { toolName -> navigateTo(Screen.FutureFeaturePlaceholder(toolName)) }
+                onNavigateToTool = { toolName -> 
+                    when (toolName) {
+                        "Camera Scan" -> navigateTo(Screen.Scanner)
+                        "Extract Text (OCR)", "Layout OCR", "Enhance Doc", "Extract Tables" -> navigateTo(Screen.AiOcr(toolName))
+                        "Merge PDF", "eSign PDF", "Protect PDF", "Image to PDF", "Compress PDF", "PDF to Image" -> navigateTo(Screen.PdfTools(toolName))
+                        else -> navigateTo(Screen.FutureFeaturePlaceholder(toolName))
+                    }
+                }
             )
         }
         is Screen.Search -> {
@@ -67,7 +84,39 @@ fun AppNavHost() {
             )
         }
         is Screen.Profile -> {
-            ProfileScreen(onNavigateBack = navigateBack)
+            ProfileScreen(
+                onNavigateBack = navigateBack,
+                onNavigateToSubscription = { navigateTo(Screen.Subscription) }
+            )
+        }
+        is Screen.Subscription -> {
+            SubscriptionScreen(
+                onNavigateBack = navigateBack
+            )
+        }
+        is Screen.Scanner -> {
+            ScannerScreen(
+                onNavigateBack = navigateBack,
+                onNavigateToEditor = { documentId -> navigateTo(Screen.Editor(documentId)) }
+            )
+        }
+        is Screen.AiOcr -> {
+            AiOcrScreen(
+                toolName = screen.toolName,
+                onNavigateBack = navigateBack
+            )
+        }
+        is Screen.PdfTools -> {
+            PdfToolsScreen(
+                toolName = screen.toolName,
+                onNavigateBack = navigateBack
+            )
+        }
+        is Screen.Editor -> {
+            EditorScreen(
+                documentId = screen.documentId,
+                onNavigateBack = navigateBack
+            )
         }
         is Screen.FolderDetail -> {
             FolderDetailScreen(

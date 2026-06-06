@@ -10,6 +10,10 @@ object ProjectConfig {
     // Controls SDK target versions globally across all modules
     const val COMPILE_SDK_MAJOR = 36
     const val COMPILE_SDK_MINOR = 1
-    const val MIN_SDK = 36
+    const val MIN_SDK = 26
     const val TARGET_SDK = 36
+
+    // --- JVM TOOLCHAIN RESOLUTION ---
+    // Aligning with Eclipse Temurin JDK 21 verified in Architecture.md
+    const val JDK_VERSION = 21 
 }

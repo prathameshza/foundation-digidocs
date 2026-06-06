@@ -2,9 +2,8 @@ import com.pluton.orbitscanner.config.ProjectConfig
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
+        alias(libs.plugins.kotlin.compose)
+    id("com.android.legacy-kapt")
     id("dagger.hilt.android.plugin")
 }
 
@@ -21,18 +20,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
 
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 
     buildFeatures {
         compose = true
     }
+}
+
+kotlin {
+    jvmToolchain(ProjectConfig.JDK_VERSION)
 }
 
 dependencies {
@@ -41,6 +37,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.ui)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 

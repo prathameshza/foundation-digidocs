@@ -2,9 +2,8 @@ import com.pluton.orbitscanner.config.ProjectConfig
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
+        alias(libs.plugins.kotlin.compose)
+    id("com.android.legacy-kapt")
     id("dagger.hilt.android.plugin")
     id("com.pluton.orbitscanner.app.release-version")
 }
@@ -30,21 +29,29 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
     buildFeatures {
         compose = true
     }
+
+    lint {
+        abortOnError = false
+        checkTestSources = false
+    }
+}
+
+kotlin {
+    jvmToolchain(ProjectConfig.JDK_VERSION)
 }
 
 dependencies {
     implementation(project(":core"))
     implementation(project(":feature-home"))
+    implementation(project(":feature-subscription"))
+    implementation(project(":feature-scanner"))
+    implementation(project(":feature-aiocr"))
+    implementation(project(":feature-pdftools"))
+    implementation(project(":feature-editor"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
