@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DigiDocX"
+rootProject.name = "OrbitScanner"
 include(":app")
 
 include(":core")

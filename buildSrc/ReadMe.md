@@ -23,15 +23,15 @@ This is the build configuration script for the `buildSrc` module itself.
   gradlePlugin {
       plugins {
           create("appReleaseVersion") {
-              id = "com.digidocx.app.release-version"
-              implementationClass = "com.digidocx.plugins.AppReleaseVersionPlugin"
+              id = "com.pluton.orbitscanner.release-version"
+              implementationClass = "com.pluton.orbitscanner.plugins.AppReleaseVersionPlugin"
           }
       }
   }
   ```
-  This block registers the custom `AppReleaseVersionPlugin` under the plugin ID `"com.digidocx.app.release-version"`.
+  This block registers the custom `AppReleaseVersionPlugin` under the plugin ID `"com.pluton.orbitscanner.release-version"`.
 
-#### C. `buildSrc\src\main\kotlin\com\digidocx\plugins\AppReleaseVersionPlugin.kt`
+#### C. `buildSrc\src\main\kotlin\com\OrbitScanner\plugins\AppReleaseVersionPlugin.kt`
 This is the core code file of the custom versioning plugin. It implements Gradle's `Plugin<Project>` interface.
 
 * **Targeting Filter:** It uses `project.plugins.withId("com.android.application")` to ensure that the plugin’s logic is applied **only** to the main executable application module (`:app`) and is safely skipped on library modules like `:core` or `:feature-home`.
@@ -64,7 +64,7 @@ This is the core code file of the custom versioning plugin. It implements Gradle
 
 The custom plugin compiled inside `buildSrc` is applied directly to the `:app` module. 
 
-In **`DigiDocX\app\build.gradle.kts`**, you can see the plugin being requested under the `plugins` block:
+In **`OrbitScanner\app\build.gradle.kts`**, you can see the plugin being requested under the `plugins` block:
 ```kotlin
 plugins {
     alias(libs.plugins.android.application)
@@ -72,7 +72,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("com.digidocx.app.release-version") // <--- Custom Plugin Applied Here
+    id("com.pluton.orbitscanner.release-version") // <--- Custom Plugin Applied Here
 }
 ```
 

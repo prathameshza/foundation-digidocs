@@ -1,12 +1,12 @@
-# DigiDocX Architecture Guide
+# OrbitScanner Architecture Guide
 
-Welcome to the **DigiDocX** codebase! This document explains how the project is structured, where different types of code belong, and how the modules interact with each other.
+Welcome to the **OrbitScanner** codebase! This document explains how the project is structured, where different types of code belong, and how the modules interact with each other.
 
 ---
 
 ## 1. Overall Architecture Overview
 
-DigiDocX is built using a **Modularized Architecture** combined with **Clean Architecture** principles. 
+OrbitScanner is built using a **Modularized Architecture** combined with **Clean Architecture** principles. 
 
 Instead of putting all our code into a single massive folder, we split the app into smaller, self-contained units called **modules**. This keeps the code clean, makes testing easier, and allows multiple developers to work on different features without conflicts.
 
@@ -37,18 +37,18 @@ Our project is divided into three main layers:
 When you clone the project, you will see these folders at the root level. Here is how they correspond to our three layers:
 
 ```
-DigiDocX/
+OrbitScanner/
 ├── gradle/                                 # Gradle wrapper and build configuration files
 ├── build.gradle.kts                        # Root-level build configuration script
 ├── settings.gradle.kts                     # Declares all modules in the project
 │
 ├── app/                                    # LAYER 1: The App Module (Brain & Router)
 │   ├── build.gradle.kts                    # App-specific build dependencies
-│   └── src/main/java/com/digidocx/app/     # Aggregates features and handles navigation
+│   └── src/main/java/com/pluton/orbitscanner/  # Aggregates features and handles navigation
 │
 ├── core/                                   # LAYER 2: The Core Module (Shared Foundation)
 │   ├── build.gradle.kts                    # Core-specific build dependencies
-│   └── src/main/java/com/digidocx/core/    # Shared utilities, database, network, & models
+│   └── src/main/java/com/pluton/orbitscanner/core/ # Shared utilities, database, network, & models
 │
 ├── feature-home/                           # LAYER 3: Feature Modules (Independent Tools)
 ├── feature-scanner/                        # Each feature folder is structured identically,
@@ -62,13 +62,13 @@ DigiDocX/
 
 ## 2. The Core Module (`:core`)
 
-The **Core Module** is the shared engine of DigiDocX. It contains code that does not belong to any single feature but is required by many.
+The **Core Module** is the shared engine of OrbitScanner. It contains code that does not belong to any single feature but is required by many.
 
 ### Core Folder Structure & Responsibilities
 
 ```
 core/
-└── src/main/java/com/digidocx/core/
+└── src/main/java/com/pluton/orbitscanner/core/
     ├── common/          # Coroutine dispatchers, API Result wrappers, and utility loggers.
     ├── ui/              # Reusable UI elements (custom buttons, shared layouts, design systems).
     ├── database/        # Local Relational Database configuration (Room setup, DAO interfaces).
@@ -98,7 +98,7 @@ To make it easy for a developer to navigate any feature, every `:feature-*` modu
 
 ```
 feature-home/
-└── src/main/java/com/digidocx/feature/home/
+└── src/main/java/com/pluton/orbitscanner/feature/home/
     ├── data/                      # 1. THE DATA LAYER (The "How")
     │   ├── mapper/                # Converts database/network objects into clean models for the UI.
     │   └── repository/            # Implements the Repository interfaces defined in the domain layer.
@@ -132,8 +132,8 @@ The **App Module** is the glue of the application. It depends on all of our feat
 
 ```
 app/
-└── src/main/java/com/digidocx/app/
-    ├── DigiDocXApplication.kt     # Hilt's Application class (The root entry point of the app).
+└── src/main/java/com/pluton/orbitscanner/
+    ├── OrbitScannerApplication.kt     # Hilt's Application class (The root entry point of the app).
     ├── MainActivity.kt            # The single host Activity for our Jetpack Compose UI.
     └── navigation/
         └── AppNavHost.kt          # Coordinates navigation across different, isolated features.
@@ -184,5 +184,45 @@ Using Gradle Version Catalog bundles (such as `libs.bundles.compose.ui`, `libs.b
 
 ### Dynamic App Versioning Plugin (`AppReleaseVersionPlugin`)
 The project utilizes a custom script plugin housed in the `buildSrc` directory to manage releases on the Google Play Console:
-*   **Modern API Integration:** By targeting `ApplicationAndroidComponentsExtension` and updating configurations within `onVariants`, the plugin relies on modern, configuration-cache-friendly Gradle APIs [1, 2].
+*   **Modern API Integration:** By targeting `ApplicationAndroidComponentsExtension` and updating configurations within `onVariants`, the plugin relies on modern, configuration-cache-friendly Gradle APIs.
 *   **DSL Decoupling:** This isolates the logic required to calculate `versionCode` and `versionName` (e.g., handling environment flags or patch counts) entirely from the main `:app` module's DSL.
+
+## 7. Gradle Toolchain Resolution
+
+The project uses dynamic toolchain resolution configured in `gradle.properties` without hardcoding paths. The priority is:
+1. **Primary**: Environment variable `JAVA_HOME`.
+2. **Fallback**: Detected local JDKs.
+3. **Last Resort**: Auto-download via Foojay.
+
+### Verification Example
+```console
+PS C:\Users\USER\Desktop\Atomic\OrbitScanner> ./gradlew -q javaToolchains
+
+ + Options
+     | Auto-detection:     Disabled
+     | Auto-download:      Enabled
+
+ + Eclipse Temurin JDK 21 (21.0.9+10-LTS)
+     | Location:           C:\Users\USER\.jdks\temurin-21.0.9
+     | Language Version:   21
+     | Vendor:             Eclipse Temurin
+     | Architecture:       amd64
+     | Is JDK:             true
+     | Detected by:        environment variable 'JAVA_HOME'
+
+PS C:\Users\USER\Desktop\Atomic\OrbitScanner> ./gradlew --version
+
+------------------------------------------------------------
+Gradle 9.4.1
+------------------------------------------------------------
+
+Build time:    2026-03-19 08:46:28 UTC
+Revision:      2d6327017519d23b96af35865dc997fcb544fb40
+
+Kotlin:        2.3.0
+Groovy:        4.0.29
+Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
+Launcher JVM:  21.0.9 (Eclipse Adoptium 21.0.9+10-LTS)
+Daemon JVM:    Compatible with Java 21, any vendor, nativeImageCapable=false (from gradle/gradle-daemon-jvm.properties)
+OS:            Windows 11 10.0 amd64
+```

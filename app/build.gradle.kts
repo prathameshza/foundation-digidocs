@@ -4,12 +4,12 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("com.digidocx.app.release-version")
+    id("com.pluton.orbitscanner.app.release-version")
 }
 
 
 android {
-    namespace = "com.digidocx.app"
+    namespace = "com.pluton.orbitscanner"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.digidocx.app"
+        applicationId = "com.pluton.orbitscanner"
         minSdk = 36
         targetSdk = 36
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

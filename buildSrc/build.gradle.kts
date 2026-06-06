@@ -10,8 +10,8 @@ dependencies {
 gradlePlugin {
     plugins {
         create("appReleaseVersion") {
-            id = "com.digidocx.app.release-version"
-            implementationClass = "com.digidocx.plugins.AppReleaseVersionPlugin"
+            id = "com.pluton.orbitscanner.app.release-version"
+            implementationClass = "com.pluton.orbitscanner.plugins.AppReleaseVersionPlugin"
         }
     }
 }

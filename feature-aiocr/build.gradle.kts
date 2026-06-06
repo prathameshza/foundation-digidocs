@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.atomic.feature_aiocr"
+    namespace = "com.pluton.orbitscanner.feature.aiocr"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1

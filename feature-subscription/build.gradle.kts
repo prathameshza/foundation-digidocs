@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.atomic.feature_subscription"
+    namespace = "com.pluton.orbitscanner.feature.subscription"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1

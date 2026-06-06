@@ -9,7 +9,7 @@ plugins {
 
 
 android {
-    namespace = "com.digidocx.core"
+    namespace = "com.pluton.orbitscanner.core"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
